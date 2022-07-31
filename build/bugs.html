@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>常见bugs记录，汇总，归类和分析 &mdash; 个人知识库–软件测试 0.1 文档</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="编程语言学习–python" href="python.html" />
+    <link rel="prev" title="mock平台搭建和使用" href="mock.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> 个人知识库–软件测试
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="testing.html">测试理论基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testcase.html">测试设计</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autotesting.html">自动化测试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performancetesting.html">性能测试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mock.html">mock平台搭建和使用</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">常见bugs记录，汇总，归类和分析</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">经典bugs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">逻辑问题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">细节错误</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">跨系统/语言交互</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">可维护性问题</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="python.html">编程语言学习–python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="django.html">基于DJango的web开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flask.html">基于Flask的web开发</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">数据库与测试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="redis.html">缓存redis的测试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lock.html">锁的测试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="asynchronous.html">异步场景测试</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">测试在CICD中的作用</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">个人知识库–软件测试</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>常见bugs记录，汇总，归类和分析</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/bugs.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bugs">
+<h1>常见bugs记录，汇总，归类和分析<a class="headerlink" href="#bugs" title="Permalink to this heading"></a></h1>
+<div class="warning admonition">
+<p class="admonition-title">前车之鉴，后事之师。</p>
+<p>排雷指南</p>
+</div>
+<section id="id1">
+<h2>经典bugs<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h2>
+<section id="id2">
+<h3>逻辑问题<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><em>状态机终态不可逆</em></p></li>
+</ul>
+<p>已经进入终态的状态，任何条件下都不能扭转</p>
+<p>【资损事故：成功状态转为已过期触发自动退款】</p>
+<ul class="simple">
+<li><p><em>幂等判断依据字段可信赖性</em></p></li>
+</ul>
+<p>缓存数据和异步写入的数据不可作为幂等依据，因为可能存在缓存失效、异步写入失败等问题导致幂等机制失效。</p>
+<p>【资损事故：反向充值业务，用异步写入的数据作为幂等依据，因缓存bug+异步迟迟未落表导致幂等失效，重复加钱而造成资金损失】</p>
+<ul class="simple">
+<li><p><em>异步任务阻塞</em></p></li>
+</ul>
+<p>【资损事故：异步任务阻塞，导致扣coins失败，积累大量的任务未扣减，造成资损】</p>
+</section>
+<section id="id3">
+<h3>细节错误<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><em>数组未判空、越界</em></p></li>
+<li><p><em>Json解析出错</em></p></li>
+<li><p><em>函数传参出错</em></p></li>
+<li><p><em>接口、DB字段类型长度不一致</em></p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>跨系统/语言交互<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><em>空值检测、Json、数组的不同解析</em></p></li>
+<li><p><em>接口交互的约定</em></p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>可维护性问题<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><em>枚举</em></p></li>
+<li><p><em>配置项</em></p></li>
+<li><p><em>抽离集中管理</em></p></li>
+<li><p><em>处理一致性</em></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mock.html" class="btn btn-neutral float-left" title="mock平台搭建和使用" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="python.html" class="btn btn-neutral float-right" title="编程语言学习–python" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2022, huodan.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
